@@ -4,7 +4,7 @@
 MODE = "SWAP"
 
 # Перед запуском обязательно укажите полный путь до папки с расширением Zerion
-EXTENSION_PATH = 'D:\SlonZerion\Backpack\BackpackExtension'
+EXTENSION_PATH = 'D:\SlonZerion\Backpack Wallet\BackpackExtension'
 
 # Количество потоков
 THREADS_NUM = 2

@@ -51,14 +51,17 @@ async def run(id, private_key, proxy, semaphore):
                             ]
                         )
                     
-                    page = await context.new_page()
-                    await page.goto('chrome-extension://lkimhcmllogkbbkkhkkjfhpemngidiem/options.html?onboarding=true')
-                    await page.close()
-                    page = await switch_to_page_by_title(context, '')
-                    await page.close()
+                    start = await context.new_page()
+                    # await page.goto('chrome-extension://lkimhcmllogkbbkkhkkjfhpemngidiem/options.html?onboarding=true')
+                    # await page.close()
+                    # page = await switch_to_page_by_title(context, '')
+                    # await page.close()
                     
                     page = await switch_to_page_by_title(context, 'Backpack')
-                    await page.goto('chrome-extension://lkimhcmllogkbbkkhkkjfhpemngidiem/options.html?onboarding=true')
+                    extension_url = page.url.split('/')[2].strip()
+                    # print(extension_url)
+                    # print()
+                    await page.goto(f"chrome-extension://{extension_url}/options.html?onboarding=true")
 
                     await page.click('span:text("Import Wallet")', timeout=5000)
                     await page.click('span:text("Skip")', timeout=5000)
@@ -77,7 +80,7 @@ async def run(id, private_key, proxy, semaphore):
                     await asyncio.sleep(uniform(2, 3))
                           
                     if MODE == "SWAP":
-                        await swap(id, context, page)
+                        await swap(id, context, page, extension_url)
                     else:
                         logger.error("Wrong mode")
                         return
@@ -95,7 +98,7 @@ async def run(id, private_key, proxy, semaphore):
                 pass
 
 
-async def swap(id, context, page):
+async def swap(id, context, page, extension_url):
     rand_self_count = random.randint(SWAP_COUNT[0], SWAP_COUNT[1])
     logger.info(f"{id} | START {rand_self_count} swaps..")
     count_errors = 0
@@ -104,7 +107,7 @@ async def swap(id, context, page):
             logger.error(f"{id} | Error rate of more than {MAX_TRY_SEND} | Skip wallet...")
             break
         try:
-            await page.goto("chrome-extension://lkimhcmllogkbbkkhkkjfhpemngidiem/popup.html")
+            await page.goto(f"chrome-extension://{extension_url}/popup.html")
             await page.click('svg[data-testid="SwapHorizIcon"]', timeout=5000)
             await asyncio.sleep(random.uniform(1, 2))
             
