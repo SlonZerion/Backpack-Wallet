@@ -52,6 +52,12 @@ async def run(id, private_key, proxy, semaphore):
                         )
                     
                     start = await context.new_page()
+                    
+                    
+                    page = await switch_to_page_by_title(context, 'Backpack')
+                    extension_url = page.url.split('/')[2].strip()
+                    await page.goto(f"chrome-extension://{extension_url}/options.html?onboarding=true")
+                    
                     try:
                         empty_page1 = await switch_to_page_by_title(context, '')
                         await empty_page1.close()
@@ -60,10 +66,6 @@ async def run(id, private_key, proxy, semaphore):
                     except:
                         pass
                     
-                    page = await switch_to_page_by_title(context, 'Backpack')
-                    extension_url = page.url.split('/')[2].strip()
-                    await page.goto(f"chrome-extension://{extension_url}/options.html?onboarding=true")
-
                     await page.click('span:text("Import Wallet")', timeout=5000)
                     await page.click('span:text("Skip")', timeout=5000)
                     await page.click('span:text("Import private key")', timeout=5000)
