@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_coral_xyz_app_extension=globalThis.webpackChunk_coral_xyz_app_extension||[]).push([[565],{38565:a=>{a.exports=JSON.parse('{"messages":{"GptGxg":"Cambiar contraseña"}}')}}]);
